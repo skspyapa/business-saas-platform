@@ -11,6 +11,7 @@
 	<groupId>com.sky</groupId>
 	<artifactId>business-saas-platform</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name/>
 	<description/>
 	<url/>
@@ -29,6 +30,14 @@
 	<properties>
 		<java.version>21</java.version>
 	</properties>
+
+	<modules>
+		<module>module-core</module>
+		<module>module-tenant</module>
+		<module>module-catalog</module>
+		<module>module-transaction</module>
+		<module>application</module>
+	</modules>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -86,18 +95,6 @@
 							<artifactId>lombok</artifactId>
 						</path>
 					</annotationProcessorPaths>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
 				</configuration>
 			</plugin>
 		</plugins>

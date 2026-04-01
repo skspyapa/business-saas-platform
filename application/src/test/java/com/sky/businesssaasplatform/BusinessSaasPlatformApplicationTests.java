@@ -1,4 +1,4 @@
-package com.sky.platform;
+package com.sky.businesssaasplatform;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

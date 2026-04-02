@@ -18,6 +18,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.sky</groupId>
+			<artifactId>module-tenant</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sky</groupId>
 			<artifactId>module-catalog</artifactId>
 			<version>${project.version}</version>
 		</dependency>

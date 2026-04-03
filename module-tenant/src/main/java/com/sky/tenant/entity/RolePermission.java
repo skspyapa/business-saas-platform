@@ -14,22 +14,17 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "business_settings", schema = "tenant")
-public class BusinessSettings extends BaseEntity {
+@Table(name = "role_permissions", schema = "tenant")
+public class RolePermission extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "business_id", nullable = false)
-    private Business business;
+    @JoinColumn(name = "business_user_role_id", nullable = false)
+    private BusinessUserRole businessUserRole;
 
-    @Column(nullable = false, columnDefinition="jsonb")
-    private String settings;
-
-    @Column
-    private String description;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "permission_id", nullable = false)
+    private Permission permission;
 
     @Column(nullable = false)
-    private String timezone = "UTC";
-
-    @Column(nullable = false)
-    private String currency = "USD";
+    private Boolean granted = true;  // true = grant, false = deny (for overrides)
 }

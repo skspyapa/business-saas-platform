@@ -31,4 +31,7 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean isEmailVerified = false;
+
+    @Column(nullable = false)
+    private Boolean isPhoneNumberVerified = false;
 }

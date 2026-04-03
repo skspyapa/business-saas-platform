@@ -1,7 +1,16 @@
 package com.sky.tenant.entity;
 
+import java.util.Set;
+
 import com.sky.core.entity.BaseEntity;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -25,6 +34,6 @@ public class BusinessUserRole extends BaseEntity {
     @Column(nullable = false)
     private Boolean isActive = true;
 
-    @Column
-    private String permissions; // JSON string of permissions
+    @OneToMany(mappedBy = "businessUserRole", fetch = FetchType.LAZY)
+    private Set<RolePermission> rolePermissions;
 }

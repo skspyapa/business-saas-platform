@@ -1,6 +1,5 @@
 package com.sky.tenant.service;
 
-import com.sky.tenant.dto.BusinessUserRoleRequest;
 import com.sky.tenant.dto.BusinessUserRoleResponse;
 import com.sky.tenant.entity.Business;
 import com.sky.tenant.entity.BusinessUserRole;

@@ -1,4 +1,4 @@
-package com.sky.businesssaasplatform.exception;
+package com.sky.core.exception;
 
 import java.time.LocalDateTime;
 

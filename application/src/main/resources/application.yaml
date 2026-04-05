@@ -1,6 +1,12 @@
 spring:
   application:
     name: business-saas-platform
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # IMPORTANT: Change this URL/port to match your local Keycloak instance and Realm name!
+          issuer-uri: http://localhost:8080/realms/business-saas
 
   datasource:
     url: jdbc:postgresql://localhost:5432/business_saas

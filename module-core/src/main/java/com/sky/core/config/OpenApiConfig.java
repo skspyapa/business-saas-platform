@@ -1,4 +1,4 @@
-package com.sky.businesssaasplatform.config;
+package com.sky.core.config;
 
 import java.util.List;
 

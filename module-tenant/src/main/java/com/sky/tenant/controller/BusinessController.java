@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -27,8 +29,11 @@ public class BusinessController {
 
     @PostMapping
     @Operation(summary = "Create a new business", description = "Create a new business entity with default subscription (FREE plan)")
-    public ResponseEntity<BusinessResponse> createBusiness(@RequestBody BusinessRequest request) {
-        UUID ownerId = UUID.fromString("00000000-0000-0000-0000-000000000001"); // Placeholder - will be replaced with actual user from SecurityContext
+    public ResponseEntity<BusinessResponse> createBusiness(
+            @RequestBody BusinessRequest request,
+            @AuthenticationPrincipal Jwt jwt) {
+        // Extract real user ID from Keycloak JWT subject
+        UUID ownerId = UUID.fromString(jwt.getSubject()); 
         BusinessResponse response = businessService.createBusiness(request, ownerId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -55,8 +60,10 @@ public class BusinessController {
     @Operation(summary = "Get user's businesses", description = "Retrieve all businesses owned by the current user")
     public ResponseEntity<Page<BusinessResponse>> getMyBusinesses(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        UUID ownerId = UUID.fromString("00000000-0000-0000-0000-000000000001"); // Placeholder - will be replaced with actual user from SecurityContext
+            @RequestParam(defaultValue = "10") int size,
+            @AuthenticationPrincipal Jwt jwt) {
+        // Extract real user ID from Keycloak JWT subject
+        UUID ownerId = UUID.fromString(jwt.getSubject()); 
         Pageable pageable = PageRequest.of(page, Math.min(size, 100)); // Max 100 per page
         Page<BusinessResponse> response = businessService.getBusinessesByOwner(ownerId, pageable);
         return ResponseEntity.ok(response);

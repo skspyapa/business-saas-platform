@@ -1,7 +1,12 @@
 package com.sky.tenant.entity;
 
 import com.sky.core.entity.BaseEntity;
-import jakarta.persistence.*;
+
+import java.util.UUID;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,10 +17,13 @@ import lombok.EqualsAndHashCode;
 public class User extends BaseEntity {
 
     @Column(nullable = false, unique = true)
+    private UUID keycloakId;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private String passwordHash;
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @Column(nullable = false)
     private String firstName;
@@ -23,15 +31,6 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String lastName;
 
-    @Column
-    private String phoneNumber;
-
     @Column(nullable = false)
     private Boolean isActive = true;
-
-    @Column(nullable = false)
-    private Boolean isEmailVerified = false;
-
-    @Column(nullable = false)
-    private Boolean isPhoneNumberVerified = false;
 }

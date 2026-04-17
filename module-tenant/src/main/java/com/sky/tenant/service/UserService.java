@@ -44,4 +44,22 @@ public class UserService {
                 return userRepository.save(newUser);
             });
     }
+
+    @Transactional(readOnly = true)
+    public User getCurrentUser(Jwt jwt) {
+        UUID keycloakId = UUID.fromString(jwt.getSubject());
+        return userRepository.findByKeycloakId(keycloakId)
+                .orElseThrow(() -> new RuntimeException("User not found for Keycloak ID: " + keycloakId));
+    }
+
+    @Transactional(readOnly = true)
+    public java.util.List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserById(UUID id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+    }
 }

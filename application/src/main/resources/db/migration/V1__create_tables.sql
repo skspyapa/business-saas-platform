@@ -15,14 +15,12 @@ CREATE SCHEMA IF NOT EXISTS tenant;
 -- Auditab Field: No parent entities
 CREATE TABLE IF NOT EXISTS tenant.users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    keycloak_id UUID NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
-    phone_number VARCHAR(20),
     is_active BOOLEAN NOT NULL DEFAULT true,
-    is_email_verified BOOLEAN NOT NULL DEFAULT false,
-    is_phone_number_verified BOOLEAN NOT NULL DEFAULT false,
     -- Base Entity Audit Fields
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,

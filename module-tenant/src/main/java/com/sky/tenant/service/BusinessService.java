@@ -52,9 +52,9 @@ public class BusinessService {
             throw new DuplicateBusinessException("Subdomain '" + request.subdomain() + "' is already in use");
         }
 
-        // Fetch owner
-        User owner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new BusinessNotFoundException("Owner with ID '" + ownerId + "' not found"));
+        // Fetch owner using the Keycloak ID provided by the Controller Security Context
+        User owner = userRepository.findByKeycloakId(ownerId)
+                .orElseThrow(() -> new BusinessNotFoundException("Owner with Keycloak ID '" + ownerId + "' not found"));
 
         // Create business entity
         Business business = EntityMapper.toBusinessEntity(request, owner);
@@ -128,8 +128,12 @@ public class BusinessService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BusinessResponse> getBusinessesByOwner(UUID ownerId, Pageable pageable) {
-        Page<Business> page = businessRepository.findByOwnerId(ownerId, pageable);
+    public Page<BusinessResponse> getBusinessesByOwner(UUID keycloakOwnerId, Pageable pageable) {
+        // The controller passes the Keycloak ID, we must resolve it to the internal PG User ID first
+        User owner = userRepository.findByKeycloakId(keycloakOwnerId)
+                .orElseThrow(() -> new BusinessNotFoundException("Owner with Keycloak ID '" + keycloakOwnerId + "' not found"));
+                
+        Page<Business> page = businessRepository.findByOwnerId(owner.getId(), pageable);
         return page.map(EntityMapper::toBusinessResponse);
     }
 

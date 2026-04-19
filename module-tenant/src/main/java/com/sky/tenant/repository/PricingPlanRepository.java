@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
+import com.sky.tenant.enums.PlanType;
 
 @Repository
 public interface PricingPlanRepository extends JpaRepository<PricingPlan, UUID> {
-    Optional<PricingPlan> findByPlanType(String planType);
-    Optional<PricingPlan> findByPlanTypeAndIsActiveTrue(String planType);
+    Optional<PricingPlan> findByPlanType(PlanType planType);
+    Optional<PricingPlan> findByPlanTypeAndIsActiveTrue(PlanType planType);
 }

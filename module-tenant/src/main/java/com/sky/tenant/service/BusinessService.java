@@ -14,6 +14,7 @@ import com.sky.tenant.repository.BusinessRepository;
 import com.sky.tenant.repository.BusinessSettingsRepository;
 import com.sky.tenant.repository.PricingPlanRepository;
 import com.sky.tenant.repository.UserRepository;
+import com.sky.tenant.enums.PlanType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,7 @@ public class BusinessService {
         businessSettingsRepository.save(settings);
 
         // Auto-assign FREE pricing plan subscription
-        PricingPlan freePlan = pricingPlanRepository.findByPlanType("FREE")
+        PricingPlan freePlan = pricingPlanRepository.findByPlanType(PlanType.FREE)
                 .orElseThrow(() -> new InvalidOperationException("FREE pricing plan not found in system"));
         subscriptionService.assignSubscription(savedBusiness.getId(), freePlan.getId());
 

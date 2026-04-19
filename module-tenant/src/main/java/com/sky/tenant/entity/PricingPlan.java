@@ -4,6 +4,7 @@ import com.sky.core.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.sky.tenant.enums.PlanType;
 
 import java.math.BigDecimal;
 
@@ -13,8 +14,9 @@ import java.math.BigDecimal;
 @Table(name = "pricing_plans", schema = "tenant")
 public class PricingPlan extends BaseEntity {
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private String planType;  // FREE, BASIC, PREMIUM, ENTERPRISE
+    private PlanType planType;  // FREE, BASIC, PREMIUM, ENTERPRISE
 
     @Column(nullable = false)
     private String displayName;  // "Basic Plan", "Premium Plan"

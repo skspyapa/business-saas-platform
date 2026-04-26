@@ -88,14 +88,31 @@ CREATE TABLE IF NOT EXISTS tenant.businesses (
     CONSTRAINT fk_business_owner FOREIGN KEY (owner_id) REFERENCES tenant.users(id) ON DELETE RESTRICT
 );
 
+-- Entity: Role
+-- Parent: tenant.businesses
+CREATE TABLE IF NOT EXISTS tenant.roles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    business_id UUID NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    is_system_role BOOLEAN NOT NULL DEFAULT false,
+    -- Base Entity Audit Fields
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL,
+    is_deleted BOOLEAN NOT NULL DEFAULT false,
+    CONSTRAINT fk_role_business FOREIGN KEY (business_id) REFERENCES tenant.businesses(id) ON DELETE CASCADE,
+    CONSTRAINT uk_role_name_per_business UNIQUE (business_id, name)
+);
+
 -- Entity: BusinessUserRole
--- Parent: tenant.businesses, tenant.users
--- Note: Permissions are managed via role_permissions join table (NOT embedded as JSONB)
+-- Parent: tenant.businesses, tenant.users, tenant.roles
 CREATE TABLE IF NOT EXISTS tenant.business_user_roles (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     business_id UUID NOT NULL,
     user_id UUID NOT NULL,
-    role VARCHAR(50) NOT NULL,
+    role_id UUID NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT true,
     -- Base Entity Audit Fields
     created_at TIMESTAMP NOT NULL,
@@ -105,15 +122,16 @@ CREATE TABLE IF NOT EXISTS tenant.business_user_roles (
     is_deleted BOOLEAN NOT NULL DEFAULT false,
     CONSTRAINT fk_bur_business FOREIGN KEY (business_id) REFERENCES tenant.businesses(id) ON DELETE CASCADE,
     CONSTRAINT fk_bur_user FOREIGN KEY (user_id) REFERENCES tenant.users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_bur_role FOREIGN KEY (role_id) REFERENCES tenant.roles(id) ON DELETE RESTRICT,
     CONSTRAINT uk_business_user_role UNIQUE (business_id, user_id)
 );
 
 -- Entity: RolePermission
--- Parent: tenant.business_user_roles, tenant.permissions
--- Join table: BusinessUserRole -> Permission (many-to-many with granted flag)
+-- Parent: tenant.roles, tenant.permissions
+-- Join table: Role -> Permission (many-to-many with granted flag)
 CREATE TABLE IF NOT EXISTS tenant.role_permissions (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    business_user_role_id UUID NOT NULL,
+    role_id UUID NOT NULL,
     permission_id UUID NOT NULL,
     granted BOOLEAN NOT NULL DEFAULT true,
     -- Base Entity Audit Fields
@@ -122,9 +140,9 @@ CREATE TABLE IF NOT EXISTS tenant.role_permissions (
     created_by VARCHAR(255) NOT NULL,
     updated_by VARCHAR(255) NOT NULL,
     is_deleted BOOLEAN NOT NULL DEFAULT false,
-    CONSTRAINT fk_rp_role FOREIGN KEY (business_user_role_id) REFERENCES tenant.business_user_roles(id) ON DELETE CASCADE,
+    CONSTRAINT fk_rp_role FOREIGN KEY (role_id) REFERENCES tenant.roles(id) ON DELETE CASCADE,
     CONSTRAINT fk_rp_permission FOREIGN KEY (permission_id) REFERENCES tenant.permissions(id) ON DELETE RESTRICT,
-    CONSTRAINT uk_role_permission UNIQUE (business_user_role_id, permission_id)
+    CONSTRAINT uk_role_permission UNIQUE (role_id, permission_id)
 );
 
 -- Entity: Subscription
@@ -152,9 +170,6 @@ CREATE TABLE IF NOT EXISTS tenant.business_settings (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     business_id UUID NOT NULL,
     settings JSONB NOT NULL,
-    description TEXT,
-    timezone VARCHAR(50) NOT NULL DEFAULT 'UTC',
-    currency VARCHAR(3) NOT NULL DEFAULT 'USD',
     -- Base Entity Audit Fields
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
@@ -500,10 +515,12 @@ CREATE INDEX idx_users_email ON tenant.users(email);
 CREATE INDEX idx_businesses_owner ON tenant.businesses(owner_id);
 CREATE INDEX idx_businesses_subdomain ON tenant.businesses(subdomain);
 CREATE INDEX idx_businesses_is_active ON tenant.businesses(is_active);
+CREATE INDEX idx_roles_business ON tenant.roles(business_id);
 CREATE INDEX idx_bur_business ON tenant.business_user_roles(business_id);
 CREATE INDEX idx_bur_user ON tenant.business_user_roles(user_id);
+CREATE INDEX idx_bur_role ON tenant.business_user_roles(role_id);
 CREATE INDEX idx_bur_is_active ON tenant.business_user_roles(is_active);
-CREATE INDEX idx_rp_role ON tenant.role_permissions(business_user_role_id);
+CREATE INDEX idx_rp_role ON tenant.role_permissions(role_id);
 CREATE INDEX idx_rp_permission ON tenant.role_permissions(permission_id);
 CREATE INDEX idx_subscription_business ON tenant.subscriptions(business_id);
 CREATE INDEX idx_subscription_plan ON tenant.subscriptions(pricing_plan_id);

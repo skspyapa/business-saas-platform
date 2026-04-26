@@ -18,8 +18,8 @@ import lombok.EqualsAndHashCode;
 public class RolePermission extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "business_user_role_id", nullable = false)
-    private BusinessUserRole businessUserRole;
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "permission_id", nullable = false)

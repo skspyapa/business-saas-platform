@@ -6,10 +6,7 @@ import java.util.UUID;
 public record BusinessSettingsResponse(
         UUID id,
         UUID businessId,
-        String timezone,
-        String currency,
         String settings,
-        String description,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

@@ -87,10 +87,7 @@ public class EntityMapper {
         return new BusinessSettingsResponse(
                 settings.getId(),
                 settings.getBusiness().getId(),
-                settings.getTimezone(),
-                settings.getCurrency(),
                 settings.getSettings(),
-                settings.getDescription(),
                 settings.getCreatedAt(),
                 settings.getUpdatedAt()
         );
@@ -102,8 +99,6 @@ public class EntityMapper {
         }
         BusinessSettings settings = new BusinessSettings();
         settings.setBusiness(business);
-        settings.setTimezone(request.timezone() != null ? request.timezone() : "UTC");
-        settings.setCurrency(request.currency() != null ? request.currency() : "USD");
         settings.setSettings(request.settings());
         return settings;
     }

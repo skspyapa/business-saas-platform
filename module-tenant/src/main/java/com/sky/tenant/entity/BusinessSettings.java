@@ -6,7 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,19 +17,10 @@ import lombok.EqualsAndHashCode;
 @Table(name = "business_settings", schema = "tenant")
 public class BusinessSettings extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_id", nullable = false)
     private Business business;
 
-    @Column(nullable = false, columnDefinition="jsonb")
+    @Column(nullable = false, columnDefinition = "jsonb")
     private String settings;
-
-    @Column
-    private String description;
-
-    @Column(nullable = false)
-    private String timezone = "UTC";
-
-    @Column(nullable = false)
-    private String currency = "USD";
 }

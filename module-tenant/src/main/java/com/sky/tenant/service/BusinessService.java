@@ -59,17 +59,14 @@ public class BusinessService {
 
         // Create business entity
         Business business = EntityMapper.toBusinessEntity(request, owner);
-        business.setCreatedBy("SYSTEM_PLACEHOLDER"); // Placeholder - will be replaced with actual user from SecurityContext
+
         Business savedBusiness = businessRepository.save(business);
 
         // Auto-create default business settings
         BusinessSettings settings = new BusinessSettings();
         settings.setBusiness(savedBusiness);
-        settings.setTimezone("UTC");
-        settings.setCurrency("USD");
         settings.setSettings("{}");
-        settings.setDescription("Default settings");
-        settings.setCreatedBy("SYSTEM_PLACEHOLDER");
+
         businessSettingsRepository.save(settings);
 
         // Auto-assign FREE pricing plan subscription
@@ -104,7 +101,7 @@ public class BusinessService {
         business.setCountry(request.country());
         business.setCity(request.city());
         business.setAddress(request.address());
-        business.setUpdatedBy("SYSTEM_PLACEHOLDER");
+
 
         Business updatedBusiness = businessRepository.save(business);
         return EntityMapper.toBusinessResponse(updatedBusiness);
@@ -147,7 +144,7 @@ public class BusinessService {
         }
 
         business.setIsActive(false);
-        business.setUpdatedBy("SYSTEM_PLACEHOLDER");
+
         Business deactivated = businessRepository.save(business);
         return EntityMapper.toBusinessResponse(deactivated);
     }
@@ -161,7 +158,7 @@ public class BusinessService {
         }
 
         business.setIsActive(true);
-        business.setUpdatedBy("SYSTEM_PLACEHOLDER");
+
         Business activated = businessRepository.save(business);
         return EntityMapper.toBusinessResponse(activated);
     }

@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS tenant.roles (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     is_system_role BOOLEAN NOT NULL DEFAULT false,
+    is_active BOOLEAN NOT NULL DEFAULT true,
     -- Base Entity Audit Fields
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
@@ -516,6 +517,7 @@ CREATE INDEX idx_businesses_owner ON tenant.businesses(owner_id);
 CREATE INDEX idx_businesses_subdomain ON tenant.businesses(subdomain);
 CREATE INDEX idx_businesses_is_active ON tenant.businesses(is_active);
 CREATE INDEX idx_roles_business ON tenant.roles(business_id);
+CREATE INDEX idx_roles_is_active ON tenant.roles(is_active);
 CREATE INDEX idx_bur_business ON tenant.business_user_roles(business_id);
 CREATE INDEX idx_bur_user ON tenant.business_user_roles(user_id);
 CREATE INDEX idx_bur_role ON tenant.business_user_roles(role_id);

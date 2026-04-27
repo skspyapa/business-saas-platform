@@ -4,14 +4,13 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import com.sky.core.util.SecurityUtils;
 
 @Component
 public class AuditorAwareImpl implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        // TODO: Replace with actual user from Spring Security context
-        // For now, return "system" as placeholder
-        return Optional.of("system");
+        return Optional.of(SecurityUtils.getCurrentUserId());
     }
 }

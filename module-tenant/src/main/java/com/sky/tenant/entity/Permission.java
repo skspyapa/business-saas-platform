@@ -4,7 +4,11 @@ import com.sky.core.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import com.sky.tenant.enums.PermissionCategory;
+import com.sky.tenant.enums.PermissionType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,12 +18,14 @@ import lombok.EqualsAndHashCode;
 @Table(name = "permissions", schema = "tenant")
 public class Permission extends BaseEntity {
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private String name;  // can_edit_settings, can_manage_staff, can_process_refunds
+    private PermissionType name;
 
     @Column
     private String description;  // Human-readable description
 
-    @Column
-    private String category;  // business_settings, staff_management, order_management, etc.
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PermissionCategory category;  // mapped via enum for strict safety
 }

@@ -2,6 +2,8 @@ package com.sky.tenant.mapper;
 
 import com.sky.tenant.dto.*;
 import com.sky.tenant.entity.*;
+import com.sky.tenant.enums.PermissionType;
+import java.util.Set;
 
 public class EntityMapper {
 
@@ -114,14 +116,14 @@ public class EntityMapper {
                 user.getId(),
                 user.getEmail(),
                 user.getFirstName() + " " + user.getLastName(),
-                userRole.getRole(),
+                userRole.getRole().getName(),
                 userRole.getIsActive(),
                 userRole.getCreatedAt(),
                 userRole.getUpdatedAt()
         );
     }
 
-    public static BusinessUserRole toBusinessUserRoleEntity(Business business, User user, String role) {
+    public static BusinessUserRole toBusinessUserRoleEntity(Business business, User user, Role role) {
         if (business == null || user == null || role == null) {
             return null;
         }
@@ -131,5 +133,22 @@ public class EntityMapper {
         userRole.setRole(role);
         userRole.setIsActive(true);
         return userRole;
+    }
+
+    public static RoleResponse toRoleResponse(Role role, Set<PermissionType> permissions) {
+        if (role == null) {
+            return null;
+        }
+        return new RoleResponse(
+                role.getId(),
+                role.getBusiness().getId(),
+                role.getName(),
+                role.getDescription(),
+                role.getIsSystemRole(),
+                role.getIsActive(),
+                permissions,
+                role.getCreatedAt(),
+                role.getUpdatedAt()
+        );
     }
 }

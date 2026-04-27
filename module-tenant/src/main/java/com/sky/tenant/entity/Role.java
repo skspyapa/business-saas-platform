@@ -29,4 +29,7 @@ public class Role extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean isSystemRole = false;
+
+    @Column(nullable = false)
+    private Boolean isActive = true;
 }

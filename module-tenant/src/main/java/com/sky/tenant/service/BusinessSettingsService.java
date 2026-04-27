@@ -38,11 +38,8 @@ public class BusinessSettingsService {
                 .orElseGet(() -> {
                     BusinessSettings defaultSettings = new BusinessSettings();
                     defaultSettings.setBusiness(business);
-                    defaultSettings.setTimezone("UTC");
-                    defaultSettings.setCurrency("USD");
                     defaultSettings.setSettings("{}");
-                    defaultSettings.setDescription("Default business settings");
-                    defaultSettings.setCreatedBy("SYSTEM_PLACEHOLDER");
+
                     return businessSettingsRepository.save(defaultSettings);
                 });
 
@@ -61,39 +58,16 @@ public class BusinessSettingsService {
                 .orElseThrow(() -> new InvalidOperationException("Settings not found for business with ID '" + businessId + "'"));
 
         // Update settings
-        if (request.timezone() != null && !request.timezone().isBlank()) {
-            settings.setTimezone(request.timezone());
-        }
-        if (request.currency() != null && !request.currency().isBlank()) {
-            settings.setCurrency(request.currency());
-        }
         if (request.settings() != null) {
             settings.setSettings(request.settings());
         }
-        settings.setUpdatedBy("SYSTEM_PLACEHOLDER");
+
 
         BusinessSettings updated = businessSettingsRepository.save(settings);
         return EntityMapper.toBusinessSettingsResponse(updated);
     }
 
-    public BusinessSettingsResponse updateTimezoneAndCurrency(UUID businessId, String timezone, String currency) {
-        Business business = businessRepository.findById(businessId)
-                .orElseThrow(() -> new BusinessNotFoundException("Business with ID '" + businessId + "' not found"));
 
-        BusinessSettings settings = businessSettingsRepository.findByBusinessId(businessId)
-                .orElseThrow(() -> new InvalidOperationException("Settings not found for business with ID '" + businessId + "'"));
-
-        if (timezone != null && !timezone.isBlank()) {
-            settings.setTimezone(timezone);
-        }
-        if (currency != null && !currency.isBlank()) {
-            settings.setCurrency(currency);
-        }
-        settings.setUpdatedBy("SYSTEM_PLACEHOLDER");
-
-        BusinessSettings updated = businessSettingsRepository.save(settings);
-        return EntityMapper.toBusinessSettingsResponse(updated);
-    }
 
     @Transactional(readOnly = true)
     public BusinessSettings getSettingsEntity(UUID businessId) {

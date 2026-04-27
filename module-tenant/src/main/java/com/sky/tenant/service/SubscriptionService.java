@@ -51,7 +51,7 @@ public class SubscriptionService {
 
         // Create new subscription
         Subscription subscription = EntityMapper.toSubscriptionEntity(business, plan);
-        subscription.setCreatedBy("SYSTEM_PLACEHOLDER");
+
         Subscription saved = subscriptionRepository.save(subscription);
         return EntityMapper.toSubscriptionResponse(saved);
     }
@@ -68,7 +68,7 @@ public class SubscriptionService {
         }
 
         subscription.setPricingPlan(newPlan);
-        subscription.setUpdatedBy("SYSTEM_PLACEHOLDER");
+
         Subscription updated = subscriptionRepository.save(subscription);
         return EntityMapper.toSubscriptionResponse(updated);
     }
@@ -79,7 +79,7 @@ public class SubscriptionService {
 
         subscription.setEndDate(LocalDateTime.now());
         subscription.setIsActive(false);
-        subscription.setUpdatedBy("SYSTEM_PLACEHOLDER");
+
         subscriptionRepository.save(subscription);
     }
 
@@ -100,7 +100,7 @@ public class SubscriptionService {
         }
         // Extend by 30 days or 1 month
         subscription.setEndDate(endDate.plusMonths(1));
-        subscription.setUpdatedBy("SYSTEM_PLACEHOLDER");
+
         Subscription renewed = subscriptionRepository.save(subscription);
         return EntityMapper.toSubscriptionResponse(renewed);
     }

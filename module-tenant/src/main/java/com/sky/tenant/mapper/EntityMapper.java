@@ -61,7 +61,6 @@ public class EntityMapper {
                 plan.getDisplayName(),
                 plan.getMonthlyPrice(),
                 plan.getMaxUsers(),
-                plan.getMaxStorageGb(),
                 subscription.getStartDate(),
                 subscription.getEndDate(),
                 subscription.getIsActive(),

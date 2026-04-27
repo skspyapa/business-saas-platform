@@ -14,7 +14,6 @@ public record SubscriptionResponse(
                 String planName,
                 BigDecimal monthlyPrice,
                 Integer maxUsers,
-                Integer maxStorageGb,
                 LocalDateTime startDate,
                 LocalDateTime endDate,
                 Boolean isActive,

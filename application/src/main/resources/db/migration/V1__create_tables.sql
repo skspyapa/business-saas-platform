@@ -53,7 +53,6 @@ CREATE TABLE IF NOT EXISTS tenant.pricing_plans (
     description TEXT,
     monthly_price NUMERIC(19, 2) NOT NULL,
     max_users INTEGER NOT NULL,
-    max_storage_gb INTEGER NOT NULL,
     features JSONB,
     is_active BOOLEAN NOT NULL DEFAULT true,
     -- Base Entity Audit Fields

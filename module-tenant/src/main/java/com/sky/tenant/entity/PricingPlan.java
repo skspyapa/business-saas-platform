@@ -30,9 +30,6 @@ public class PricingPlan extends BaseEntity {
     @Column(nullable = false)
     private Integer maxUsers;  // Max users allowed
 
-    @Column(nullable = false)
-    private Integer maxStorageGb;  // Max storage in GB
-
     @Column(columnDefinition = "jsonb")
     private String features;  // Features included: {appointments, inventory, loyalty, etc.}
 

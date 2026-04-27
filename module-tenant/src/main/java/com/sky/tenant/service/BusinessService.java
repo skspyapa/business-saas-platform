@@ -65,7 +65,20 @@ public class BusinessService {
         // Auto-create default business settings
         BusinessSettings settings = new BusinessSettings();
         settings.setBusiness(savedBusiness);
-        settings.setSettings("{}");
+        
+        String defaultSettingsJson = """
+            {
+              "timezone": "UTC",
+              "currency": "USD",
+              "language": "en",
+              "theme": "light",
+              "notifications": {
+                "email": true,
+                "sms": false
+              }
+            }
+            """;
+        settings.setSettings(defaultSettingsJson);
 
         businessSettingsRepository.save(settings);
 

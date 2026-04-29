@@ -4,6 +4,8 @@ import com.sky.core.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import com.sky.tenant.enums.PlanType;
 
 import java.math.BigDecimal;
@@ -30,6 +32,7 @@ public class PricingPlan extends BaseEntity {
     @Column(nullable = false)
     private Integer maxUsers;  // Max users allowed
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private String features;  // Features included: {appointments, inventory, loyalty, etc.}
 

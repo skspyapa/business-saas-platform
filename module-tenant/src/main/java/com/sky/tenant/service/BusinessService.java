@@ -49,13 +49,13 @@ public class BusinessService {
         }
 
         // Check if subdomain already exists
-        if (businessRepository.findBySubdomain(request.subdomain()).isPresent()) {
+        if (request.subdomain() != null && businessRepository.findBySubdomain(request.subdomain()).isPresent()) {
             throw new DuplicateBusinessException("Subdomain '" + request.subdomain() + "' is already in use");
         }
 
         // Fetch owner using the Keycloak ID provided by the Controller Security Context
         User owner = userRepository.findByKeycloakId(ownerId)
-                .orElseThrow(() -> new BusinessNotFoundException("Owner with Keycloak ID '" + ownerId + "' not found"));
+                .orElseThrow(() -> new BusinessNotFoundException("Owner with given Keycloak ID not found"));
 
         // Create business entity
         Business business = EntityMapper.toBusinessEntity(request, owner);
